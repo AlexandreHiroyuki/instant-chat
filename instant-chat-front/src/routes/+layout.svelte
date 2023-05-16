@@ -16,7 +16,7 @@
 >
 
 <div class="h-screen flex justify-center items-center">
-	<main class="card shadow-md p-12 w-2/3 h-2/3">
+	<main class="card shadow-md p-4 w-2/3 h-2/3">
 		<slot />
 	</main>
 </div>

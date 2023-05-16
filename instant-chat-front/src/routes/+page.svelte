@@ -1,20 +1,11 @@
 <script lang="ts">
 	import { LightSwitch } from '@skeletonlabs/skeleton';
 
-	import { chatRoomStore } from './room-store';
+	import roomStore from './room-store';
 
-	const chatRoomUnsubscribe = chatRoomStore.subscribe((store) => {
-		console.log(store);
-	});
-
-	const createRoom = () => {
-		const newCode: string = String(Math.floor(Math.random() * 1000000));
-
-		chatRoomStore.set({
-			...$chatRoomStore,
-			code: newCode
-		});
-	};
+	// const chatRoomUnsubscribe = room.subscribe((store) => {
+	// 	console.log(store);
+	// });
 </script>
 
 <svelte:head>
@@ -25,12 +16,12 @@
 <div class="w-full h-full pt-6 pb-28 flex flex-col justify-between items-center">
 	<h1 class="text-center">⚡ Instant Chat</h1>
 
-	<a href="/create-user" class="btn variant-filled rounded-full text-lg"
+	<a href="/create-user" class="btn variant-filled rounded-container-token text-lg w-full"
 		>Create a new chat room instantly</a
 	>
 
-	<div class="input-group input-group-divider grid-cols-[auto_1fr_auto] text-lg rounded-full">
-		<button class="variant-filled-secondary">Join the chat room now!</button>
+	<div class="input-group input-group-divider grid-cols-[auto_1fr] text-lg rounded-container-token">
+		<button class="btn variant-filled">Join the chat room now!</button>
 		<input
 			class="input px-3 py-2"
 			type="text"
