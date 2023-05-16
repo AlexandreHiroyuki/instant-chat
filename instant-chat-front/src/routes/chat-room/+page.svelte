@@ -20,7 +20,7 @@
 				placeholder="Digit your impactful message..."
 				rows="1"
 			/>
-			<button class="variant-filled-primary">Send</button>
+			<button class="btn variant-filled-primary">Send</button>
 		</div>
 	</div>
 
