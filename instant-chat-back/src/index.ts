@@ -31,12 +31,14 @@ const rooms: { [key: string]: { users: string[]; messages: string[] } } = {}
 
 io.on('connection', (socket) => {
   console.log(socket)
+  let socketRoomCode: string
 
   socket.on('create', (user) => {
     const roomCode = String(Math.floor(Math.random() * 1000000))
     socket.join(roomCode)
     rooms[roomCode] = { users: [user], messages: [] }
 
+    socketRoomCode = roomCode
     socket.to(roomCode).emit('created', roomCode)
   })
 })
