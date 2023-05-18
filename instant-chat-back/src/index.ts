@@ -20,14 +20,19 @@ const options: cors.CorsOptions = {
 app.use(cors(options))
 app.use(express.json())
 
+const rooms: { [key: string]: { users: string[]; messages: string[] } } = {}
+
+app.get('/has-room', (req: Request, res: Response) => {
+  console.log(req.query.code, rooms.hasOwnProperty(String(req.query.code)))
+  res.send(rooms.hasOwnProperty(String(req.query.code)))
+})
+
 const server = createServer(app)
 const io = new Server(server, {
   cors: {
     origin: allowedOrigins
   }
 })
-
-const rooms: { [key: string]: { users: string[]; messages: string[] } } = {}
 
 io.on('connection', (socket) => {
   console.log(socket)
@@ -40,6 +45,14 @@ io.on('connection', (socket) => {
 
     socketRoomCode = roomCode
     socket.to(roomCode).emit('created', roomCode)
+  })
+
+  socket.on('join', (roomCode, user) => {
+    socket.join(roomCode)
+    rooms[roomCode].users.push(user)
+
+    socketRoomCode = roomCode
+    socket.to(roomCode).emit('joined', user)
   })
 })
 

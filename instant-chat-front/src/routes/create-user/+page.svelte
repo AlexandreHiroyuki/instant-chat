@@ -1,5 +1,7 @@
 <script lang="ts">
 	import { LightSwitch } from '@skeletonlabs/skeleton';
+
+	import { nickname, password } from '../user-store';
 </script>
 
 <svelte:head>
@@ -14,7 +16,12 @@
 		class="input-group input-group-divider grid-cols-[auto_1fr_auto] text-lg rounded-container-token"
 	>
 		<span class="input-group-shim px-3 py-2">User Nickname</span>
-		<input class="input px-3 py-2" type="text" placeholder="Digit your breathtaking nickname..." />
+		<input
+			bind:value={$nickname}
+			class="input px-3 py-2"
+			type="text"
+			placeholder="Digit your breathtaking nickname..."
+		/>
 	</label>
 
 	<label
@@ -22,13 +29,16 @@
 	>
 		<span class="input-group-shim px-3 py-2">User Password</span>
 		<input
+			bind:value={$password}
 			class="input px-3 py-2"
 			type="password"
 			placeholder="Digit your super simple password..."
 		/>
 	</label>
 
-	<a href="/chat-room" class="btn variant-filled rounded-container-token text-lg w-full"
-		>Create Instant User</a
+	<a
+		on:click={() => console.log($nickname, $password)}
+		href="/chat-room"
+		class="btn variant-filled rounded-container-token text-lg w-full">Create Instant User</a
 	>
 </div>

@@ -1,7 +1,7 @@
 import { writable } from 'svelte/store';
 
-const nickname = writable('');
-const password = writable('');
+export const nickname = writable('');
+export const password = writable('');
 
 export default {
 	nickname,
