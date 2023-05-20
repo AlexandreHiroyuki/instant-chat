@@ -1,10 +1,12 @@
 <script lang="ts">
 	import { LightSwitch } from '@skeletonlabs/skeleton';
-	import api from '../services/api';
+	import { goto } from '$app/navigation';
 
-	import { isNew } from './room-store';
+	import api from '../services/api';
+	import { isNew, roomCode } from './room-store';
 
 	let roomCodeInput: string;
+	let isCodeInputEnabled: boolean = true;
 
 	function createRoom() {
 		isNew.update(() => true);
@@ -12,11 +14,25 @@
 	}
 
 	function joinRoom() {
+		isCodeInputEnabled = false;
 		isNew.update(() => false);
-		api.get(`/has-room`, { params: { code: roomCodeInput } }).then((res) => {
-			console.log(res);
-		});
-		// console.log('joinRoom', roomCodeInput, import.meta.env);
+		api
+			.get(`/has-room`, { params: { code: roomCodeInput } })
+			.then((res) => {
+				isCodeInputEnabled = true;
+				console.log('/has-room', res.status, res.data);
+
+				if (res.data === true) {
+					roomCode.update(() => roomCodeInput);
+					goto('/chat-room');
+				}
+			})
+			.catch((err) => {
+				isCodeInputEnabled = true;
+				console.error('/has-room', err);
+			});
+
+		console.log('joinRoom', roomCodeInput, import.meta.env);
 	}
 </script>
 
@@ -35,16 +51,20 @@
 		>Create a new chat room instantly</a
 	>
 
-	<div class="input-group input-group-divider grid-cols-[auto_1fr] text-lg rounded-container-token">
-		<button on:click={joinRoom} class="btn variant-filled">Join the chat room now!</button>
+	<div
+		class="input-group input-group-divider grid-cols-[auto_1fr] text-lg rounded-container-token {!isCodeInputEnabled
+			? 'animate-pulse'
+			: ''}"
+	>
+		<button on:click={joinRoom} disabled={!isCodeInputEnabled} class="btn variant-filled"
+			>Join the chat room now!</button
+		>
 		<input
 			bind:value={roomCodeInput}
+			disabled={!isCodeInputEnabled}
 			class="input px-3 py-2"
 			type="text"
 			placeholder="Copy & Paste an instant chat room code here to join!"
 		/>
 	</div>
 </div>
-
-<!-- <style lang="postcss">
-</style> -->

@@ -1,7 +1,33 @@
 <script lang="ts">
 	import { LightSwitch } from '@skeletonlabs/skeleton';
+	import { goto } from '$app/navigation';
 
+	import { socket } from '../../services/socket';
+	import { isNew } from '../room-store';
 	import { nickname, password } from '../user-store';
+
+	// function createRoom() {
+	// 	console.log('createRoom', $nickname, $password);
+	// 	socket.connect();
+	// 	socket.emit('create', { nickname: $nickname, password: $password });
+	// }
+
+	// function joinRoom() {
+	// 	console.log('joinRoom', $nickname, $password);
+	// 	socket.connect();
+	// }
+
+	let isWaiting: boolean = false;
+
+	function linkStart() {
+		console.log('linkStart', $nickname, $password);
+		socket.connect();
+		if ($isNew) {
+			goto('/chat-room');
+			socket.emit('create', { nickname: $nickname, password: $password });
+		} else {
+		}
+	}
 </script>
 
 <svelte:head>
@@ -36,9 +62,7 @@
 		/>
 	</label>
 
-	<a
-		on:click={() => console.log($nickname, $password)}
-		href="/chat-room"
-		class="btn variant-filled rounded-container-token text-lg w-full">Create Instant User</a
+	<button on:click={linkStart} class="btn variant-filled rounded-container-token text-lg w-full"
+		>Create Instant User</button
 	>
 </div>

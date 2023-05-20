@@ -20,7 +20,9 @@ const options: cors.CorsOptions = {
 app.use(cors(options))
 app.use(express.json())
 
-const rooms: { [key: string]: { users: string[]; messages: string[] } } = {}
+const rooms: {
+  [key: string]: { users: { [key: string]: string }; messages: string[] }
+} = {}
 
 app.get('/has-room', (req: Request, res: Response) => {
   console.log(req.query.code, rooms.hasOwnProperty(String(req.query.code)))
@@ -37,22 +39,35 @@ const io = new Server(server, {
 io.on('connection', (socket) => {
   console.log(socket)
   let socketRoomCode: string
+  let nickname: string
 
   socket.on('create', (user) => {
     const roomCode = String(Math.floor(Math.random() * 1000000))
     socket.join(roomCode)
-    rooms[roomCode] = { users: [user], messages: [] }
+    rooms[roomCode] = {
+      users: {
+        [String(user.nickname)]: String(user.password ? user.password : '')
+      },
+      messages: []
+    }
 
+    nickname = user.nickname
     socketRoomCode = roomCode
     socket.to(roomCode).emit('created', roomCode)
   })
 
   socket.on('join', (roomCode, user) => {
-    socket.join(roomCode)
-    rooms[roomCode].users.push(user)
+    if (rooms[roomCode].users.hasOwnProperty(user.nickname)) {
+      if (rooms[roomCode].users.hasOwnProperty(user.nickname)) {
+        // if user does not exist
+        socket.join(roomCode)
+        rooms[roomCode].users[user.nickname] = user.password
 
-    socketRoomCode = roomCode
-    socket.to(roomCode).emit('joined', user)
+        nickname = user.nickname
+        socketRoomCode = roomCode
+        socket.to(roomCode).emit('joined', user.nickname)
+      }
+    }
   })
 })
 
