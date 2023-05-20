@@ -10,7 +10,7 @@
 
 <div class="grid grid-cols-[1fr_auto] h-full w-full">
 	<div class="flex flex-col-reverse h-full">
-		<div class="input-group input-group-divider grid-cols-[1fr_auto] rounded-container-token">
+		<div class="input-group input-group-divider grid-cols-[1fr_auto]">
 			<!-- <button class="input-group-shim">+</button> -->
 			<textarea
 				bind:value={currentMessage}
@@ -20,7 +20,7 @@
 				placeholder="Digit your impactful message..."
 				rows="1"
 			/>
-			<button class="btn variant-filled-primary">Send</button>
+			<button class="btn variant-filled-primary rounded-none">Send</button>
 		</div>
 	</div>
 

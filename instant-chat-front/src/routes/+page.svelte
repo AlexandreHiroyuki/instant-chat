@@ -48,7 +48,7 @@
 	<button
 		on:click={createRoom}
 		disabled={!isCodeInputEnabled}
-		class="btn variant-filled rounded-container-token text-lg w-full relative"
+		class="btn variant-filled text-lg w-full relative"
 	>
 		{#if isCodeInputEnabled}
 			<span class="absolute right-[-0.75%] top-[-10%] flex h-4 w-4">
@@ -62,17 +62,21 @@
 	</button>
 
 	<div
-		class="input-group input-group-divider grid-cols-[auto_1fr] text-lg rounded-container-token {!isCodeInputEnabled
+		class="input-group input-group-divider grid-cols-[auto_1fr] text-lg {!isCodeInputEnabled
 			? 'animate-pulse'
 			: ''}"
 	>
-		<button on:click={joinRoom} disabled={!isCodeInputEnabled} class="btn variant-filled"
-			>Join the chat room now!</button
+		<button
+			on:click={joinRoom}
+			disabled={!isCodeInputEnabled}
+			class="btn variant-filled rounded-none"
+		>
+			Join the chat room now!</button
 		>
 		<input
 			bind:value={roomCodeInput}
 			disabled={!isCodeInputEnabled}
-			class="input px-3 py-2"
+			class="input px-3 py-2 rounded-none"
 			type="text"
 			placeholder="Copy & Paste an instant chat room code here to join!"
 		/>

@@ -38,9 +38,7 @@
 <div class="w-full h-full pt-6 pb-28 flex flex-col justify-between items-center">
 	<h1 class="text-center">⚡ Instant Chat</h1>
 
-	<label
-		class="input-group input-group-divider grid-cols-[auto_1fr_auto] text-lg rounded-container-token"
-	>
+	<label class="input-group input-group-divider grid-cols-[auto_1fr_auto] text-lg">
 		<span class="input-group-shim px-3 py-2">User Nickname</span>
 		<input
 			bind:value={$nickname}
@@ -50,9 +48,7 @@
 		/>
 	</label>
 
-	<label
-		class="input-group input-group-divider grid-cols-[auto_1fr_auto] text-lg rounded-container-token"
-	>
+	<label class="input-group input-group-divider grid-cols-[auto_1fr_auto] text-lg">
 		<span class="input-group-shim px-3 py-2">User Password</span>
 		<input
 			bind:value={$password}
@@ -62,7 +58,6 @@
 		/>
 	</label>
 
-	<button on:click={linkStart} class="btn variant-filled rounded-container-token text-lg w-full"
-		>Create Instant User</button
+	<button on:click={linkStart} class="btn variant-filled text-lg w-full">Create Instant User</button
 	>
 </div>
