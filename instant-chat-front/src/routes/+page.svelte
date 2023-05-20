@@ -11,6 +11,7 @@
 	function createRoom() {
 		isNew.update(() => true);
 		console.log('createRoom', $isNew);
+		goto('/create-user');
 	}
 
 	function joinRoom() {
@@ -24,7 +25,7 @@
 
 				if (res.data === true) {
 					roomCode.update(() => roomCodeInput);
-					goto('/chat-room');
+					goto('/create-user');
 				}
 			})
 			.catch((err) => {
@@ -44,12 +45,21 @@
 <div class="w-full h-full pt-6 pb-28 flex flex-col justify-between items-center">
 	<h1 class="text-center">⚡ Instant Chat</h1>
 
-	<a
-		href="/create-user"
+	<button
 		on:click={createRoom}
-		class="btn variant-filled rounded-container-token text-lg w-full"
-		>Create a new chat room instantly</a
+		disabled={!isCodeInputEnabled}
+		class="btn variant-filled rounded-container-token text-lg w-full relative"
 	>
+		{#if isCodeInputEnabled}
+			<span class="absolute right-[-0.75%] top-[-10%] flex h-4 w-4">
+				<span
+					class="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary-400 opacity-75"
+				/>
+				<span class="relative inline-flex rounded-full h-4 w-4 bg-primary-500" />
+			</span>
+		{/if}
+		Create a new chat room instantly
+	</button>
 
 	<div
 		class="input-group input-group-divider grid-cols-[auto_1fr] text-lg rounded-container-token {!isCodeInputEnabled
