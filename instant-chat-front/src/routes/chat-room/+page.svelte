@@ -24,7 +24,9 @@
 		</div>
 	</div>
 
-	<aside class="grid grid-rows-[auto_1fr_auto] divide-solid border-primary-300 border-l ml-4 pl-4">
+	<aside
+		class="grid grid-rows-[auto_1fr_auto] divide-solid border-primary-300 dark:border-primary-500 border-l ml-4 pl-4"
+	>
 		<LightSwitch class="ms-auto" />
 		<div class="">list</div>
 		<button class="btn variant-ghost-primary">Show Room Code</button>

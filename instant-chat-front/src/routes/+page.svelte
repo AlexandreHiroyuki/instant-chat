@@ -51,11 +51,15 @@
 		class="btn variant-filled text-lg w-full relative"
 	>
 		{#if isCodeInputEnabled}
-			<span class="absolute right-[-0.75%] top-[-10%] flex h-4 w-4">
+			<span class="absolute right-[-0.75%] top-[-10%] flex h-4 w-">
 				<span
 					class="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary-400 opacity-75"
 				/>
-				<span class="relative inline-flex rounded-full h-4 w-4 bg-primary-500" />
+				<span
+					class="relative inline-flex rounded-full h-4 w-10 bg-primary-500 text-xs justify-center items-center text-white"
+				>
+					Now!
+				</span>
 			</span>
 		{/if}
 		Create a new chat room instantly

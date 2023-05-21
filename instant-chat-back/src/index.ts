@@ -37,23 +37,26 @@ const io = new Server(server, {
 })
 
 io.on('connection', (socket) => {
-  console.log(socket)
+  console.log('on connection', socket.id, socket.connected)
   let socketRoomCode: string
   let nickname: string
 
   socket.on('create', (user) => {
-    const roomCode = String(Math.floor(Math.random() * 1000000))
-    socket.join(roomCode)
-    rooms[roomCode] = {
-      users: {
-        [String(user.nickname)]: String(user.password ? user.password : '')
-      },
-      messages: []
-    }
+    if (user.nickname) {
+      const roomCode = String(Math.floor(Math.random() * 1000000))
+      socket.join(roomCode)
+      rooms[roomCode] = {
+        users: {
+          [String(user.nickname)]: String(user.password ? user.password : '')
+        },
+        messages: []
+      }
 
-    nickname = user.nickname
-    socketRoomCode = roomCode
-    socket.to(roomCode).emit('created', roomCode)
+      nickname = user.nickname
+      socketRoomCode = roomCode
+      socket.emit('created', roomCode)
+      console.log(nickname, socketRoomCode)
+    }
   })
 
   socket.on('join', (roomCode, user) => {
