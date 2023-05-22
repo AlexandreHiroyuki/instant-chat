@@ -23,6 +23,7 @@
 				goto('/chat-room');
 			});
 		} else {
+			isWaiting = true;
 		}
 	}
 </script>

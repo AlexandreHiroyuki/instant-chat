@@ -3,6 +3,7 @@ import express, { Express, Request, Response } from 'express'
 import cors from 'cors'
 import { createServer } from 'http'
 import { Server } from 'socket.io'
+import { v4 as uuid } from 'uuid'
 
 dotenv.config({
   path: process.env.NODE_ENV === 'dev' ? '.env.dev' : '.env.prod'
@@ -43,7 +44,7 @@ io.on('connection', (socket) => {
 
   socket.on('create', (user) => {
     if (user.nickname) {
-      const roomCode = String(Math.floor(Math.random() * 1000000))
+      const roomCode: string = uuid()
       socket.join(roomCode)
       rooms[roomCode] = {
         users: {
@@ -61,7 +62,7 @@ io.on('connection', (socket) => {
 
   socket.on('join', (roomCode, user) => {
     if (rooms[roomCode].users.hasOwnProperty(user.nickname)) {
-      if (rooms[roomCode].users.hasOwnProperty(user.nickname)) {
+      if (rooms[roomCode].users[user.nickname] === user.password) {
         // if user does not exist
         socket.join(roomCode)
         rooms[roomCode].users[user.nickname] = user.password
