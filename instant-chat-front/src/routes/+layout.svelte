@@ -15,8 +15,8 @@
 	>{@html `<script>${autoModeWatcher.toString()} autoModeWatcher();</script>`}</svelte:head
 >
 
-<div class="h-screen flex justify-center items-center">
-	<main class="card shadow-md p-4 w-2/3 h-2/3">
+<div class="h-screen w-screen flex justify-center items-center">
+	<main class="p-4 w-4/5 h-4/5 lg:w-3/4 lg:h-3/4 lg:card lg:shadow-md">
 		<slot />
 	</main>
 </div>

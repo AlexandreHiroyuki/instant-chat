@@ -17,6 +17,8 @@
 	function joinRoom() {
 		isCodeInputEnabled = false;
 		isNew.update(() => false);
+		console.log('joinRoom', roomCodeInput);
+
 		api
 			.get(`/has-room`, { params: { code: roomCodeInput } })
 			.then((res) => {
@@ -32,8 +34,6 @@
 				isCodeInputEnabled = true;
 				console.error('/has-room', err);
 			});
-
-		console.log('joinRoom', roomCodeInput, import.meta.env);
 	}
 </script>
 
