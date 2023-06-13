@@ -51,7 +51,7 @@
 		class="btn variant-filled text-lg w-full relative"
 	>
 		{#if isCodeInputEnabled}
-			<span class="absolute right-[-0.75%] top-[-10%] flex h-4 w-">
+			<span class="absolute right-[-0.75%] top-[-10%] flex h-4">
 				<span
 					class="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary-400 opacity-75"
 				/>

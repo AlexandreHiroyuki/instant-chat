@@ -38,7 +38,7 @@ const io = new Server(server, {
 })
 
 io.on('connection', (socket) => {
-  console.log('on connection', socket.id, socket.connected)
+  console.log('[on connection]', socket.id, socket.connected)
   let socketRoomCode: string
   let nickname: string
 
@@ -56,22 +56,40 @@ io.on('connection', (socket) => {
       nickname = user.nickname
       socketRoomCode = roomCode
       socket.emit('created', roomCode)
-      console.log(nickname, socketRoomCode)
+      console.log(
+        '[on create]',
+        nickname,
+        rooms[roomCode].users,
+        socketRoomCode
+      )
     }
   })
 
   socket.on('join', (roomCode, user) => {
+    while (rooms[roomCode] === undefined) {}
     if (rooms[roomCode].users.hasOwnProperty(user.nickname)) {
       if (rooms[roomCode].users[user.nickname] === user.password) {
-        // if user does not exist
         socket.join(roomCode)
         rooms[roomCode].users[user.nickname] = user.password
 
         nickname = user.nickname
         socketRoomCode = roomCode
-        socket.to(roomCode).emit('joined', user.nickname)
+        socket.emit('joined', user.nickname)
+      } else {
+        socket.emit('wrong-password')
       }
     }
+    // if user does not exist
+    else {
+      socket.join(roomCode)
+      rooms[roomCode].users[user.nickname] = user.password
+
+      nickname = user.nickname
+      socketRoomCode = roomCode
+      socket.emit('joined', user.nickname)
+    }
+
+    console.log('[on join]', nickname, rooms[roomCode].users, socketRoomCode)
   })
 })
 

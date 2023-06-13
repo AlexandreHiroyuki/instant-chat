@@ -24,6 +24,19 @@
 			});
 		} else {
 			isWaiting = true;
+			socket.emit('join', $roomCode, { nickname: $nickname, password: $password });
+
+			console.log($roomCode, { nickname: $nickname, password: $password });
+
+			socket.on('joined', (code) => {
+				isWaiting = false;
+				console.log('on joined', code);
+				goto('/chat-room');
+			});
+			socket.on('wrong-password', () => {
+				isWaiting = false;
+				console.log('on invalid');
+			});
 		}
 	}
 </script>

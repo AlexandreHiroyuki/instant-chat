@@ -1,7 +1,30 @@
 <script lang="ts">
-	import { LightSwitch } from '@skeletonlabs/skeleton';
+	import { LightSwitch, Modal, modalStore } from '@skeletonlabs/skeleton';
+	import type { ModalSettings, ModalComponent } from '@skeletonlabs/skeleton';
+
+	import { isNew, roomCode } from '../room-store';
+	import codeModal from './code-modal.svelte';
+	import { onMount } from 'svelte';
 
 	let currentMessage = '';
+
+	const codeModalComponent: ModalComponent = {
+		ref: codeModal,
+		props: {
+			code: $roomCode
+		}
+	};
+
+	const codeModalSettings: ModalSettings = {
+		type: 'component',
+		component: codeModalComponent
+	};
+
+	onMount(() => {
+		if ($isNew) {
+			modalStore.trigger(codeModalSettings);
+		}
+	});
 </script>
 
 <svelte:head>
@@ -28,7 +51,12 @@
 		class="grid grid-rows-[auto_1fr_auto] divide-solid border-primary-300 dark:border-primary-500 border-l ml-4 pl-4"
 	>
 		<LightSwitch class="ms-auto" />
-		<div class="">list</div>
-		<button class="btn variant-ghost-primary">Show Room Code</button>
+		<div class="">
+			<h5>Member List:</h5>
+		</div>
+		<button on:click={() => modalStore.trigger(codeModalSettings)} class="btn variant-ghost-primary"
+			>Show Room Code</button
+		>
 	</aside>
 </div>
+<Modal />
