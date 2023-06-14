@@ -3,6 +3,8 @@
 	import type { ToastSettings } from '@skeletonlabs/skeleton';
 	import { clipboard } from '@skeletonlabs/skeleton';
 
+	export let parent: any;
+	console.log(parent);
 	export let code: string;
 
 	const clipboardFeedback: ToastSettings = {
@@ -22,6 +24,7 @@
 	>
 		<button class="btn px-3 py-2">Click to copy the room code</button>
 		<div class="input px-3 py-2 border-y-0 border-r-0">{code}</div>
+		{#if false}<slot />{/if}
 	</div>
 </div>
 <Toast />

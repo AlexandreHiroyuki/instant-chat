@@ -1,10 +1,12 @@
 <script lang="ts">
 	import { LightSwitch, Modal, modalStore } from '@skeletonlabs/skeleton';
 	import type { ModalSettings, ModalComponent } from '@skeletonlabs/skeleton';
+	import { onDestroy, onMount } from 'svelte';
 
-	import { isNew, roomCode } from '../room-store';
+	import { socket } from '../../services/socket';
+	import { isNew, roomCode, users } from '../room-store';
+	import { nickname } from '../user-store';
 	import codeModal from './code-modal.svelte';
-	import { onMount } from 'svelte';
 
 	let currentMessage = '';
 
@@ -25,6 +27,21 @@
 			modalStore.trigger(codeModalSettings);
 		}
 	});
+
+	socket.on('other-joined', (nickname) => {
+		users.add(nickname);
+		console.log('other-joined', nickname);
+	});
+	socket.on('other-disconnected', (nickname) => {
+		users.remove(nickname);
+		console.log('other-disconnected', nickname);
+	});
+
+	onDestroy(() => {
+		socket.disconnect();
+		socket.off('other-joined');
+		socket.off('other-disconnected');
+	});
 </script>
 
 <svelte:head>
@@ -37,7 +54,7 @@
 			<!-- <button class="input-group-shim">+</button> -->
 			<textarea
 				bind:value={currentMessage}
-				class="bg-transparent border-0 ring-0 px-3 py-2"
+				class="resize-none bg-transparent border-0 ring-0 px-3 py-2"
 				name="prompt"
 				id="prompt"
 				placeholder="Digit your impactful message..."
@@ -53,6 +70,14 @@
 		<LightSwitch class="ms-auto" />
 		<div class="">
 			<h5>Member List:</h5>
+			<ul>
+				<li>
+					{$nickname} <i class="text-primary-500 dark:text-primary-300">(Me)</i>
+				</li>
+				{#each $users as user}
+					<li>{user}</li>
+				{/each}
+			</ul>
 		</div>
 		<button on:click={() => modalStore.trigger(codeModalSettings)} class="btn variant-ghost-primary"
 			>Show Room Code</button

@@ -8,7 +8,17 @@ export const roomCode = writable(
 	// 	return () => console.log('no more subscribers');
 	// }
 );
-export const users = writable([]);
+function createUsers() {
+	const { subscribe, set, update } = writable(['']);
+
+	return {
+		subscribe,
+		add: (user: string) => update((users) => [...users, user]),
+		remove: (user: string) => update((users) => users.filter((u) => u !== user))
+	};
+}
+export const users = createUsers();
+
 export const messages = writable([]);
 
 export default {

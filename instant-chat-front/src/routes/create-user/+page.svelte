@@ -3,18 +3,17 @@
 	import { goto } from '$app/navigation';
 
 	import { socket } from '../../services/socket';
-	import { isNew, roomCode } from '../room-store';
+	import { isNew, roomCode, users } from '../room-store';
 	import { nickname, password } from '../user-store';
 
 	let isWaiting: boolean = false;
 
 	function linkStart() {
-		// console.log('linkStart', $nickname, $password);
 		socket.connect();
 		if ($isNew) {
 			isWaiting = true;
 			socket.emit('create', { nickname: $nickname, password: $password });
-			console.log('emit create', $nickname, $password);
+			console.log('[emit create]', $nickname, $password);
 
 			socket.on('created', (code) => {
 				isWaiting = false;
@@ -26,14 +25,17 @@
 			isWaiting = true;
 			socket.emit('join', $roomCode, { nickname: $nickname, password: $password });
 
-			console.log($roomCode, { nickname: $nickname, password: $password });
+			console.log('[emit join]', $roomCode, { nickname: $nickname, password: $password });
 
-			socket.on('joined', (code) => {
+			socket.on('joined', (usersList) => {
 				isWaiting = false;
-				console.log('on joined', code);
+				usersList.forEach((element: string) => {
+					users.add(element);
+				});
+				console.log('on joined', usersList);
 				goto('/chat-room');
 			});
-			socket.on('wrong-password', () => {
+			socket.on('invalid', () => {
 				isWaiting = false;
 				console.log('on invalid');
 			});

@@ -70,26 +70,38 @@ io.on('connection', (socket) => {
     if (rooms[roomCode].users.hasOwnProperty(user.nickname)) {
       if (rooms[roomCode].users[user.nickname] === user.password) {
         socket.join(roomCode)
-        rooms[roomCode].users[user.nickname] = user.password
+        socket.emit('joined', Object.keys(rooms[roomCode].users))
 
+        rooms[roomCode].users[user.nickname] = user.password
         nickname = user.nickname
         socketRoomCode = roomCode
-        socket.emit('joined', user.nickname)
-      } else {
-        socket.emit('wrong-password')
-      }
-    }
-    // if user does not exist
-    else {
-      socket.join(roomCode)
-      rooms[roomCode].users[user.nickname] = user.password
 
+        socket.to(roomCode).emit('other-joined', user.nickname)
+      } else {
+        socket.emit('invalid')
+      }
+    } else {
+      // if user does not exist
+      socket.join(roomCode)
+      socket.emit('joined', Object.keys(rooms[roomCode].users))
+
+      rooms[roomCode].users[user.nickname] = user.password
       nickname = user.nickname
       socketRoomCode = roomCode
-      socket.emit('joined', user.nickname)
+
+      socket.to(roomCode).emit('other-joined', user.nickname)
     }
 
     console.log('[on join]', nickname, rooms[roomCode].users, socketRoomCode)
+  })
+
+  socket.on('disconnect', () => {
+    console.log('[on disconnect]', nickname, socketRoomCode)
+    if (rooms.hasOwnProperty(socketRoomCode)) {
+      delete rooms[socketRoomCode].users[nickname]
+      socket.to(socketRoomCode).emit('other-disconnected', nickname)
+      socket.leave(socketRoomCode)
+    }
   })
 })
 
