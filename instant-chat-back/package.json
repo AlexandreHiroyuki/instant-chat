@@ -6,8 +6,8 @@
   "author": "AlexandreHiroyuki <alex.hiroyuki@outlook.com>",
   "license": "MIT",
   "scripts": {
-    "dev": "SET \"NODE_ENV=dev\" && nodemon src/index.ts",
-    "build": "SET \"NODE_ENV=prod\" && sucrase ./src -d ./dist --transforms typescript,imports"
+    "dev": "nodemon src/index.ts",
+    "build": "sucrase ./src -d ./dist --transforms typescript,imports"
   },
   "devDependencies": {
     "@types/cors": "^2.8.13",
