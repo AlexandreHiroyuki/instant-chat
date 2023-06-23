@@ -5,6 +5,7 @@
 	import { socket } from '../../services/socket';
 	import { isNew, roomCode, users } from '../room-store';
 	import { nickname, password } from '../user-store';
+	import { onDestroy } from 'svelte';
 
 	let isWaiting: boolean = false;
 
@@ -41,6 +42,12 @@
 			});
 		}
 	}
+
+	onDestroy(() => {
+		socket.off('created');
+		socket.off('joined');
+		socket.off('invalid');
+	});
 </script>
 
 <svelte:head>

@@ -1,4 +1,6 @@
 import { writable } from 'svelte/store';
+import type { Writable } from 'svelte/store';
+import type { Message } from './chat';
 
 export const isNew = writable(false);
 export const roomCode = writable(
@@ -9,7 +11,7 @@ export const roomCode = writable(
 	// }
 );
 function createUsers() {
-	const { subscribe, set, update } = writable(['']);
+	const { subscribe, update } = writable(['']);
 
 	return {
 		subscribe,
@@ -19,11 +21,20 @@ function createUsers() {
 }
 export const users = createUsers();
 
-export const messages = writable([]);
+function createMessageHistory() {
+	const { subscribe, update }: Writable<Message[]> = writable([]);
+
+	return {
+		subscribe,
+		add: (message: Message) => update((messages) => [...messages, message])
+		// remove: (message: Message) => update((messages) => messages.filter((m) => m !== message))
+	};
+}
+export const messageHistory = createMessageHistory();
 
 export default {
 	isNew,
 	roomCode,
 	users,
-	messages
+	messageHistory
 };
