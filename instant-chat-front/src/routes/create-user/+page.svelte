@@ -4,7 +4,7 @@
 
 	import { socket } from '../../services/socket';
 	import { isNew, roomCode, users } from '../room-store';
-	import { nickname, password } from '../user-store';
+	import { nickname } from '../user-store';
 	import { onDestroy } from 'svelte';
 
 	let isWaiting: boolean = false;
@@ -13,8 +13,8 @@
 		socket.connect();
 		if ($isNew) {
 			isWaiting = true;
-			socket.emit('create', { nickname: $nickname, password: $password });
-			console.log('[emit create]', $nickname, $password);
+			socket.emit('create', { nickname: $nickname });
+			console.log('[emit create]', $nickname);
 
 			socket.on('created', (code) => {
 				isWaiting = false;
@@ -24,12 +24,13 @@
 			});
 		} else {
 			isWaiting = true;
-			socket.emit('join', $roomCode, { nickname: $nickname, password: $password });
+			socket.emit('join', $roomCode, { nickname: $nickname });
 
-			console.log('[emit join]', $roomCode, { nickname: $nickname, password: $password });
+			console.log('[emit join]', $roomCode, { nickname: $nickname });
 
 			socket.on('joined', (usersList) => {
 				isWaiting = false;
+				console.log(usersList);
 				usersList.forEach((element: string) => {
 					users.add(element);
 				});
@@ -68,7 +69,7 @@
 		/>
 	</label>
 
-	<label class="input-group input-group-divider grid-cols-[auto_1fr_auto] text-lg">
+	<!-- <label class="input-group input-group-divider grid-cols-[auto_1fr_auto] text-lg">
 		<span class="input-group-shim px-3 py-2">User Password</span>
 		<input
 			bind:value={$password}
@@ -76,7 +77,7 @@
 			type="password"
 			placeholder="(Optional) Digit your super simple password..."
 		/>
-	</label>
+	</label> -->
 
 	<button on:click={linkStart} class="btn variant-filled text-lg w-full">Create Instant User</button
 	>

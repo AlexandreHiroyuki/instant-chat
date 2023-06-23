@@ -16,7 +16,8 @@ function createUsers() {
 	return {
 		subscribe,
 		add: (user: string) => update((users) => [...users, user]),
-		remove: (user: string) => update((users) => users.filter((u) => u !== user))
+		remove: (user: string) => update((users) => users.filter((u) => u !== user)),
+		clear: () => update(() => [])
 	};
 }
 export const users = createUsers();
@@ -26,8 +27,8 @@ function createMessageHistory() {
 
 	return {
 		subscribe,
-		add: (message: Message) => update((messages) => [...messages, message])
-		// remove: (message: Message) => update((messages) => messages.filter((m) => m !== message))
+		add: (message: Message) => update((messages) => [...messages, message]),
+		clear: () => update(() => [])
 	};
 }
 export const messageHistory = createMessageHistory();

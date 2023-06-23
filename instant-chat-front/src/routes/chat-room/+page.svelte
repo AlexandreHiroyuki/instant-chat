@@ -57,6 +57,9 @@
 		socket.off('other-joined');
 		socket.off('other-disconnected');
 		socket.disconnect();
+
+		users.clear();
+		messageHistory.clear();
 	});
 </script>
 

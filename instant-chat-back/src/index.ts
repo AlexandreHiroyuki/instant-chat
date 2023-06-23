@@ -23,7 +23,7 @@ app.use(express.json())
 
 const rooms: {
   [key: string]: {
-    users: { [key: string]: string }
+    users: Set<string>
     messages: {
       nickname: string
       message: string
@@ -60,9 +60,7 @@ io.on('connection', (socket) => {
       const roomCode: string = uuid()
       socket.join(roomCode)
       rooms[roomCode] = {
-        users: {
-          [String(user.nickname)]: String(user.password ? user.password : '')
-        },
+        users: new Set([String(user.nickname)]),
         messages: []
       }
 
@@ -80,35 +78,30 @@ io.on('connection', (socket) => {
 
   socket.on('join', (roomCode, user) => {
     while (rooms[roomCode] === undefined) {}
-    if (rooms[roomCode].users.hasOwnProperty(user.nickname)) {
-      // if (rooms[roomCode].users[user.nickname] === user.password) {
-      //   socket.join(roomCode)
-      //   socket.emit('joined', Object.keys(rooms[roomCode].users))
-      //   rooms[roomCode].users[user.nickname] = user.password
-      //   nickname = user.nickname
-      //   socketRoomCode = roomCode
-      //   socket.to(roomCode).emit('other-joined', user.nickname)
-      // } else {
-      //   socket.emit('invalid')
-      // }
-      socket.emit('invalid')
+    if (rooms[roomCode].users.has(user.nickname)) {
+      socket.emit('invalid-nickname')
     } else {
       // if user does not exist
       socket.join(roomCode)
-      socket.emit('joined', Object.keys(rooms[roomCode].users))
+      socket.emit('joined', [...rooms[roomCode].users.values()])
 
-      rooms[roomCode].users[user.nickname] = user.password
+      rooms[roomCode].users.add(user.nickname)
       nickname = user.nickname
       socketRoomCode = roomCode
 
       socket.to(roomCode).emit('other-joined', user.nickname)
     }
 
-    console.log('[on join]', nickname, rooms[roomCode].users, socketRoomCode)
+    console.log(
+      '[on join]',
+      nickname,
+      [...rooms[roomCode].users.values()],
+      socketRoomCode
+    )
   })
 
   socket.on('send-message', (message) => {
-    console.log('[on send-message]', message, nickname, socketRoomCode)
+    console.log('[on send-message]', `(${nickname})`, message, socketRoomCode)
     if (rooms.hasOwnProperty(socketRoomCode)) {
       let buildMessage = {
         nickname: nickname,
@@ -123,11 +116,8 @@ io.on('connection', (socket) => {
   socket.on('disconnect', () => {
     console.log('[on disconnect]', nickname, socketRoomCode)
     if (rooms.hasOwnProperty(socketRoomCode)) {
-      delete rooms[socketRoomCode].users[nickname]
-      if (
-        Object.keys(rooms[socketRoomCode].users).length === 0 &&
-        rooms[socketRoomCode].users.constructor === Object
-      ) {
+      rooms[socketRoomCode].users.delete(nickname)
+      if (rooms[socketRoomCode].users.size === 0) {
         delete rooms[socketRoomCode]
       }
       console.log(rooms)
