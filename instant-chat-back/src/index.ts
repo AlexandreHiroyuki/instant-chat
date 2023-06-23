@@ -83,7 +83,11 @@ io.on('connection', (socket) => {
     } else {
       // if user does not exist
       socket.join(roomCode)
-      socket.emit('joined', [...rooms[roomCode].users.values()])
+      socket.emit(
+        'joined',
+        [...rooms[roomCode].users.values()],
+        rooms[roomCode].messages
+      )
 
       rooms[roomCode].users.add(user.nickname)
       nickname = user.nickname

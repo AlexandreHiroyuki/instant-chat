@@ -3,11 +3,36 @@
 	import { goto } from '$app/navigation';
 
 	import { socket } from '../../services/socket';
-	import { isNew, roomCode, users } from '../room-store';
+	import { isNew, roomCode, users, messageHistory } from '../room-store';
+	import type { Message } from '../chat';
 	import { nickname } from '../user-store';
 	import { onDestroy } from 'svelte';
 
 	let isWaiting: boolean = false;
+
+	socket.on('created', (code) => {
+		isWaiting = false;
+		console.log('on created', code);
+		roomCode.update(() => code);
+		goto('/chat-room');
+	});
+	socket.on('joined', (usersList, messages) => {
+		isWaiting = false;
+
+		usersList.forEach((user: string) => {
+			users.add(user);
+		});
+		messages.forEach((message: Message) => {
+			messageHistory.add(message);
+		});
+
+		console.log('[on joined]', usersList);
+		goto('/chat-room');
+	});
+	socket.on('invalid-nickname', () => {
+		isWaiting = false;
+		console.log('[on invalid-nickname]');
+	});
 
 	function linkStart() {
 		socket.connect();
@@ -15,32 +40,10 @@
 			isWaiting = true;
 			socket.emit('create', { nickname: $nickname });
 			console.log('[emit create]', $nickname);
-
-			socket.on('created', (code) => {
-				isWaiting = false;
-				console.log('on created', code);
-				roomCode.update(() => code);
-				goto('/chat-room');
-			});
 		} else {
 			isWaiting = true;
 			socket.emit('join', $roomCode, { nickname: $nickname });
-
 			console.log('[emit join]', $roomCode, { nickname: $nickname });
-
-			socket.on('joined', (usersList) => {
-				isWaiting = false;
-				console.log(usersList);
-				usersList.forEach((element: string) => {
-					users.add(element);
-				});
-				console.log('on joined', usersList);
-				goto('/chat-room');
-			});
-			socket.on('invalid', () => {
-				isWaiting = false;
-				console.log('on invalid');
-			});
 		}
 	}
 
