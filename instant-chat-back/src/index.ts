@@ -80,6 +80,7 @@ io.on('connection', (socket) => {
     while (rooms[roomCode] === undefined) {}
     if (rooms[roomCode].users.has(user.nickname)) {
       socket.emit('invalid-nickname')
+      console.log('[on join] invalid nickname >', nickname, socketRoomCode)
     } else {
       // if user does not exist
       socket.join(roomCode)
