@@ -1,14 +1,8 @@
 {
-    "ignore": [
-        "**/*.test.ts",
-        "**/*.spec.ts",
-        ".git"
-    ],
-    "watch": [
-        "src"
-    ],
-    "ext": "ts",
-    "execMap": {
-        "ts": "sucrase-node src/index.ts"
-    }
+  "ignore": ["**/*.test.ts", "**/*.spec.ts", ".git"],
+  "watch": ["src"],
+  "ext": "ts",
+  "execMap": {
+    "ts": "sucrase-node src/index.ts"
+  }
 }
