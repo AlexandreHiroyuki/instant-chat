@@ -81,9 +81,7 @@
 									<p class="font-bold">
 										{bubble.nickname} <i class="text-primary-500 dark:text-primary-300">(Me)</i>
 									</p>
-									<small class="opacity-50"
-										>{format(bubble.timestamp, 'dd/MM/yyyy HH:mm')}</small
-									>
+									<small class="opacity-50">{format(bubble.timestamp, 'dd/MM/yyyy HH:mm')}</small>
 								</header>
 								<p>{bubble.message}</p>
 							</div>
@@ -93,9 +91,7 @@
 							<div class="card p-4 rounded-tr-none space-y-2 variant-soft-secondary">
 								<header class="flex justify-between items-center">
 									<p class="font-bold">{bubble.nickname}</p>
-									<small class="opacity-50"
-										>{format(bubble.timestamp, 'dd/MM/yyyy HH:mm')}</small
-									>
+									<small class="opacity-50">{format(bubble.timestamp, 'dd/MM/yyyy HH:mm')}</small>
 								</header>
 								<p>{bubble.message}</p>
 							</div>
