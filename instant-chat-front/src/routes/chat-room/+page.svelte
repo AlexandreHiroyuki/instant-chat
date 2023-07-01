@@ -46,6 +46,20 @@
 		socket.emit('send-message', messageInput);
 		messageInput = '';
 	};
+	const timestampFormat = (timestamp: number) => {
+		const dateFormat = new Date(timestamp);
+		return (
+			dateFormat.getDate() +
+			'/' +
+			(dateFormat.getMonth() + 1) +
+			'/' +
+			dateFormat.getFullYear() +
+			' ' +
+			dateFormat.getHours() +
+			':' +
+			dateFormat.getMinutes()
+		);
+	};
 
 	onMount(() => {
 		if ($isNew) {
@@ -67,9 +81,9 @@
 	<title>Instant Chat | Chat Room</title>
 </svelte:head>
 
-<div class="grid grid-cols-[1fr_auto] h-full w-full">
-	<div class="flex flex-col h-full">
-		<section class="w-full h-full p-4 overflow-y-auto space-y-4">
+<div class="grid grid-cols-[6fr_1fr] h-full">
+	<div class="flex flex-col custon-break-words overflow-hidden">
+		<section class="h-full p-4 overflow-y-auto space-y-4">
 			{#if $messageHistory}
 				{#each $messageHistory as bubble}
 					{#if bubble.nickname === $nickname}
@@ -79,7 +93,7 @@
 									<p class="font-bold">
 										{bubble.nickname} <i class="text-primary-500 dark:text-primary-300">(Me)</i>
 									</p>
-									<small class="opacity-50">{bubble.timestamp}</small>
+									<small class="opacity-50">{timestampFormat(bubble.timestamp)}</small>
 								</header>
 								<p>{bubble.message}</p>
 							</div>
