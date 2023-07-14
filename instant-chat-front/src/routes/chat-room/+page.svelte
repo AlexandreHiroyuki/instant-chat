@@ -1,10 +1,12 @@
 <script lang="ts">
+	import type { ModalComponent, ModalSettings } from '@skeletonlabs/skeleton';
 	import { LightSwitch, Modal, modalStore } from '@skeletonlabs/skeleton';
-	import type { ModalSettings, ModalComponent } from '@skeletonlabs/skeleton';
+	import { format } from 'date-fns';
+
 	import { onDestroy, onMount } from 'svelte';
 
 	import { socket } from '../../services/socket';
-	import { isNew, roomCode, users, messageHistory } from '../room-store';
+	import { isNew, messageHistory, roomCode, users } from '../room-store';
 	import { nickname } from '../user-store';
 	import codeModal from './code-modal.svelte';
 
@@ -46,20 +48,6 @@
 		socket.emit('send-message', messageInput);
 		messageInput = '';
 	};
-	const timestampFormat = (timestamp: number) => {
-		const dateFormat = new Date(timestamp);
-		return (
-			dateFormat.getDate() +
-			'/' +
-			(dateFormat.getMonth() + 1) +
-			'/' +
-			dateFormat.getFullYear() +
-			' ' +
-			dateFormat.getHours() +
-			':' +
-			dateFormat.getMinutes()
-		);
-	};
 
 	onMount(() => {
 		if ($isNew) {
@@ -93,7 +81,7 @@
 									<p class="font-bold">
 										{bubble.nickname} <i class="text-primary-500 dark:text-primary-300">(Me)</i>
 									</p>
-									<small class="opacity-50">{timestampFormat(bubble.timestamp)}</small>
+									<small class="opacity-50">{format(bubble.timestamp, 'dd/MM/yyyy HH:mm')}</small>
 								</header>
 								<p>{bubble.message}</p>
 							</div>
@@ -103,7 +91,7 @@
 							<div class="card p-4 rounded-tr-none space-y-2 variant-soft-secondary">
 								<header class="flex justify-between items-center">
 									<p class="font-bold">{bubble.nickname}</p>
-									<small class="opacity-50">{bubble.timestamp}</small>
+									<small class="opacity-50">{format(bubble.timestamp, 'dd/MM/yyyy HH:mm')}</small>
 								</header>
 								<p>{bubble.message}</p>
 							</div>
