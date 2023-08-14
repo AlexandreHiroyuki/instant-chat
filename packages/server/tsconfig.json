@@ -1,6 +1,5 @@
 {
   "extends": ["../../tsconfig.base.json"],
-  "include": "./src/**/*",
   "compilerOptions": {
     /* Visit https://aka.ms/tsconfig to read more about this file */
 
