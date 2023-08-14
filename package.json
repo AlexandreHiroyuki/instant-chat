@@ -1,0 +1,25 @@
+{
+  "name": "instant-chat",
+  "version": "1.0.0",
+  "private": true,
+  "engine": {
+    "node": "^18.17.1"
+  },
+  "workspaces": {
+    "packages": [
+      "packages/*",
+      "packages/shared/*"
+    ]
+  },
+  "repository": "git@github.com:AlexandreHiroyuki/instant-chat.git",
+  "author": "AlexandreHiroyuki <alex.hiroyuki@outlook.com>",
+  "license": "MIT",
+  "scripts": {
+    "dev": "yarn workspaces foreach -p -v -i run dev",
+    "build": "yarn workspaces foreach -p -v -i run build"
+  },
+  "devDependencies": {
+    "@instant-chat/eslint-config": "*",
+    "typescript": "^5.1.6"
+  }
+}
