@@ -1,5 +1,5 @@
 export interface Message {
-	nickname: string
-	message: string
-	timestamp: number
+  nickname: string
+  message: string
+  timestamp: number
 }

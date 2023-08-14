@@ -1,11 +1,11 @@
 declare global {
-	namespace NodeJS {
-		interface ProcessEnv {
-			NODE_ENV: 'dev' | 'prod'
-			CLIENT_ORIGIN: string
-			PORT: number
-		}
-	}
+  namespace NodeJS {
+    interface ProcessEnv {
+      NODE_ENV: 'dev' | 'prod'
+      CLIENT_ORIGIN: string
+      PORT: number
+    }
+  }
 }
 
 // If this file has no import/export statements (i.e. is a script)
