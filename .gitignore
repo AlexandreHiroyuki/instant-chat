@@ -1,4 +1,5 @@
 node_modules/
 dist/
-.yarn/
+.yarn/*.gz
+.yarn/cache/
 yarn-error.log
