@@ -5,6 +5,9 @@
   "repository": "https://github.com/AlexandreHiroyuki/ThingsBoardDeviceSimulator.git",
   "author": "AlexandreHiroyuki <alex.hiroyuki@outlook.com>",
   "license": "MIT",
+  "engine": {
+    "node": "14.17.0"
+  },
   "scripts": {
     "dev": "nodemon src/index.ts",
     "build": "sucrase ./src -d ./dist --transforms typescript,imports",
