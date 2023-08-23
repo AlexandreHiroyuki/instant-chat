@@ -10,20 +10,17 @@
 
   function createRoom() {
     isNew.update(() => true)
-    console.log('createRoom', $isNew)
     goto('/create-user')
   }
 
   function joinRoom() {
     isCodeInputEnabled = false
     isNew.update(() => false)
-    console.log('joinRoom', roomCodeInput)
 
     api
       .get(`/has-room`, { params: { code: roomCodeInput } })
       .then(res => {
         isCodeInputEnabled = true
-        console.log('/has-room', res.status, res.data)
 
         if (res.data === true) {
           roomCode.update(() => roomCodeInput)

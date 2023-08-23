@@ -4,7 +4,6 @@
   import { clipboard } from '@skeletonlabs/skeleton'
 
   export let parent: any
-  console.log(parent)
   export let code: string
 
   const clipboardFeedback: ToastSettings = {

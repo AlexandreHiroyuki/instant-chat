@@ -24,15 +24,12 @@
 
   socket.on('other-joined', nickname => {
     users.add(nickname)
-    console.log('[other-joined]', nickname)
   })
   socket.on('other-disconnected', nickname => {
     users.remove(nickname)
-    console.log('[other-disconnected]', nickname)
   })
 
   socket.on('receive-message', message => {
-    console.log('[receive-message]', message)
     messageHistory.add(message)
   })
 

@@ -20,7 +20,6 @@
 
   socket.on('created', code => {
     isWaiting = false
-    console.log('on created', code)
     roomCode.update(() => code)
     goto('/chat-room')
   })
@@ -35,14 +34,12 @@
       messageHistory.add(message)
     })
 
-    console.log('[on joined]', usersList)
     goto('/chat-room')
   })
   socket.on('invalid-nickname', () => {
     isWaiting = false
     invalidNickname = true
     toastStore.trigger(invalidFeedback)
-    console.log('[on invalid-nickname]')
   })
 
   function linkStart() {
@@ -50,11 +47,9 @@
     if ($isNew) {
       isWaiting = true
       socket.emit('create', { nickname: $nickname })
-      console.log('[emit create]', $nickname)
     } else {
       isWaiting = true
       socket.emit('join', $roomCode, { nickname: $nickname })
-      console.log('[emit join]', $roomCode, { nickname: $nickname })
     }
   }
 
