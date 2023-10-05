@@ -15,11 +15,14 @@
   "author": "AlexandreHiroyuki <alex.hiroyuki@outlook.com>",
   "license": "MIT",
   "scripts": {
-    "dev": "yarn workspaces foreach -p -v -i run dev",
-    "build": "yarn workspaces foreach -p -v -i run build"
+    "dev": "concurrently --kill-others 'yarn workspace @instant-chat/web dev' 'yarn workspace @instant-chat/server dev'",
+    "build": "concurrently 'yarn workspace @instant-chat/client build' 'yarn workspace @instant-chat/server build'",
+    "dev:web": "yarn workspace @instant-chat/web dev",
+    "dev:server": "yarn workspace @instant-chat/server dev"
   },
   "devDependencies": {
     "@instant-chat/eslint-config": "*",
+    "concurrently": "^8.2.1",
     "typescript": "^5.1.6"
   }
 }

@@ -4,5 +4,10 @@
     "editor.defaultFormatter": "svelte.svelte-vscode"
   },
   "editor.insertSpaces": true,
-  "conventionalCommits.scopes": ["eslint-config", "server", "web"]
+  "conventionalCommits.scopes": [
+    "eslint-config",
+    "server",
+    "web",
+    "dx"
+  ]
 }
